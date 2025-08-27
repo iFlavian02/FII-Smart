@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "508170801918",
+    "project_id": "fii-smart",
+    "storage_bucket": "fii-smart.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508170801918:android:b925451e190b9d7a7e0baf",
+        "android_client_info": {
+          "package_name": "com.example.fiismart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508170801918-jstej88l3o1sun0462419rgqu720u99g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fiismart",
+            "certificate_hash": "412d70db7422a349bb8e15437706fd5e21166e43"
+          }
+        },
+        {
+          "client_id": "508170801918-b0qn2nf36netre8cj2ndqiq6nukugj3v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNI92zyQqi8G12_Qeq5M6aSxiL4rvaVWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508170801918-b0qn2nf36netre8cj2ndqiq6nukugj3v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "508170801918-1c6qkk7215pcjr7911q3v6jijj9n93nn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fiismart"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,27 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "fii-smart",
+          "appId": "1:508170801918:android:b925451e190b9d7a7e0baf",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "fii-smart",
+          "configurations": {
+            "android": "1:508170801918:android:b925451e190b9d7a7e0baf",
+            "ios": "1:508170801918:ios:ad9fa027218db6c97e0baf",
+            "web": "1:508170801918:web:ace3ab1fc7db754f7e0baf"
+          }
+        }
+      }
+    }
+  }
+}
