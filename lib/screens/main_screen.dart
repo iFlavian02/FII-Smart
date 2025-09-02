@@ -17,7 +17,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   String? _selectedYear, _selectedSemester, _selectedCourse, _selectedSubject;
   final List<String> _years = ['1', '2', '3'];
-  List<String> _semesters = ['1', '2'], _courses = ['SDA','Mate','ACSO','IP','Engleza','Logica'], _subjects = [];
+  List<String> _semesters = ['1', '2'], _courses = [], _subjects = [];
   bool _loading = false;
   final DataService _data = DataService();
   final StorageService _storage = StorageService();
@@ -70,9 +70,34 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> _loadCourses(String year, String semester) async {
-    // Example: load courses based on year and semester
+    // Load courses based on year and semester
+    List<String> courses = [];
+    
+    //An 1
+    if (year == '1' && semester == '1') {
+      courses = ['SDA', 'Mate', 'ACSO', 'IP', 'Logica'];
+    } else if (year == '1' && semester == '2') {
+      courses = ['FAI', 'POO', 'PS', 'SO', 'PA'];
+    } 
+
+    //An2
+    else if (year == '2' && semester == '1') {
+      courses = ['RC', 'AG', 'BD', 'LFAC', 'PA'];
+    } else if (year == '2' && semester == '2') {
+      courses = ['IP', 'PA', 'SGBD', 'WEB'];
+    } 
+
+    //An3
+    else if (year == '3' && semester == '1') {
+      courses = ['SI', 'PYTHON', 'AI', 'ML', 'ISSA'];
+    } else if (year == '3' && semester == '2') {
+      courses = [];
+    }
+
+   
+    
     setState(() {
-      _courses = ['Math', 'CS', 'Physics'];
+      _courses = courses;
       _selectedCourse = null;
       _subjects = [];
       _selectedSubject = null;
@@ -81,6 +106,19 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<void> _loadSubjects(String course) async {
     // Example: load subjects based on course
+    if (course == 'SDA') {
+      _subjects = ['Algoritmi limbaj algoritmic', 'Analiza eficientei algiritmilor', 
+                  'Analiza eficientei algiritmilor 2','Liste stive cozi','Coada cu prioritati',
+                  'Arbori arbori binari','Grafuri','Arbori de cautare echilibrati',
+                  'Sortare','Cautare','Arbori digitali','Tabele de dispersie'];
+    } else if (course == 'FAI') {
+      _subjects = ['AI Basics', 'Machine Learning', 'Deep Learning'];
+    } else if (course == 'RC') {
+      _subjects = ['Database Systems', 'SQL', 'NoSQL'];
+    } else if (course == 'SI') {
+      _subjects = ['Software Engineering', 'Agile Methodologies', 'DevOps'];
+    }
+
     setState(() {
       _subjects = ['Algebra', 'Programming', 'Mechanics'];
       _selectedSubject = null;

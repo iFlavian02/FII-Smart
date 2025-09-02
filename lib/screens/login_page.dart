@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
-import '../services/data_service.dart';
 import '../utils/validators.dart';
-import '../models/user_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,8 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   bool _isLogin = true;
   bool _isLoading = false; // Add loading state
-  final AuthService _auth = FirebaseAuthService();  // Inject
-  final DataService _data = DataService();
+  final AuthService _auth = FirebaseAuthService();
 
   Future<void> _authAction() async {
     final email = _emailController.text.trim();
@@ -35,11 +32,10 @@ class _LoginPageState extends State<LoginPage> {
       if (_isLogin) {
         await _auth.signIn(email, password);
       } else {
-        await _auth.signUp(email, password);
-        final uid = _auth.currentUser?.uid;
-        if (uid != null) {
-          await _data.updateUser(uid, UserModel());
-        }
+        // Extract display name from email if not provided
+        final displayName = email.split('@')[0];
+        await _auth.signUp(email, password, displayName);
+        // No need to manually update user data, initializeUserData is called in signUp
       }
       // No need to set isLoading to false here, as the StreamBuilder will navigate away
     } on FirebaseAuthException catch (e) {

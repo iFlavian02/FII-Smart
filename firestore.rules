@@ -1,9 +1,54 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isCurrentUser(userId) {
+      return request.auth.uid == userId;
+    }
+    
     // Allow users to read/write their own data
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read, write: if isAuthenticated() && isCurrentUser(userId);
+      
+      // Allow access to user's notes subcollection
+      match /notes/{noteId} {
+        allow read, write: if isAuthenticated() && isCurrentUser(userId);
+      }
+    }
+    
+    // Allow authenticated users to read courses data
+    match /courses/{courseId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only admin can write courses
+    }
+    
+    // Allow authenticated users to read pre-defined content
+    match /predefinedContent/{year}/{semester}/{course}/{lesson} {
+      allow read: if isAuthenticated(); // All authenticated users can read
+      allow write: if false; // Only admin can write pre-defined content
+    }
+    
+    // Allow authenticated users to read lectures
+    match /lectures/{lectureId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only admin can write lectures
+    }
+    
+    // Allow users to create and read their own quizzes
+    match /quizzes/{quizId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+    
+    // Meta data for database initialization
+    match /meta/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only admin can write meta data
     }
   }
 }

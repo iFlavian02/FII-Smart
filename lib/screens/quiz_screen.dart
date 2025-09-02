@@ -41,9 +41,15 @@ class _QuizScreenState extends State<QuizScreen> {
       final newWeaknesses = List<String>.from(result['newWeaknesses'] ?? []);
 
       await _data.updateWeaknesses(uid, newWeaknesses);
+      // Convert the int keys to strings for Firestore compatibility
+      final serializedAnswers = <String, String>{};
+      _answers.forEach((key, value) {
+        serializedAnswers[key.toString()] = value;
+      });
+      
       await _data.updateQuizHistory(uid, {
         'quiz': widget.quiz.toJson(),
-        'answers': _answers,
+        'answers': serializedAnswers,
         'results': result,
         'timestamp': DateTime.now().toIso8601String(),
       });
