@@ -63,13 +63,7 @@ class ContentService {
     String pdfUrl
   ) async {
     try {
-      // 1. Get pre-defined content for this lesson
-      final preDefinedContent = await getPreDefinedContent(year, semester, course, lesson) ?? '';
-      
-      // 2. Use Gemini to enhance and merge the content
-      final enhancedText = await _enhanceContent(preDefinedContent, extractedText);
-      
-      // 3. Create a new user note document
+      // Create a new user note document
       final noteRef = _db.collection('users').doc(userId).collection('notes').doc();
       
       final userNote = UserNote(
@@ -81,12 +75,12 @@ class ContentService {
         lesson: lesson,
         title: title,
         originalText: extractedText,
-        enhancedText: enhancedText,
+        enhancedText: '', // Enhanced text is now generated on the fly
         pdfUrl: pdfUrl,
         uploadDate: DateTime.now(),
       );
       
-      // 4. Save to Firestore
+      // Save to Firestore
       await noteRef.set(userNote.toJson());
       
       return userNote;
@@ -145,8 +139,8 @@ class ContentService {
     }
   }
   
-  // Private method to enhance content using Gemini
-  Future<String> _enhanceContent(String preDefinedContent, String extractedText) async {
+  // Public method to enhance content using Gemini
+  Future<String> enhanceContent(String preDefinedContent, String extractedText) async {
     try {
       if (preDefinedContent.isEmpty) {
         // If no pre-defined content, just return the extracted text
@@ -186,3 +180,4 @@ The final content should be in Romanian language, like the text extracted from t
     }
   }
 }
+

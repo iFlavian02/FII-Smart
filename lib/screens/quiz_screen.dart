@@ -55,18 +55,51 @@ class _QuizScreenState extends State<QuizScreen> {
       });
 
       if (!mounted) return;
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: Text('Results: Score ${result['score']}'),
-          content: Text('Mistakes: ${(result['mistakes'] as List).join('\n')}\nAdvice: ${result['advice']}'),
-          actions: [TextButton(onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst), child: const Text('OK'))],
-        ),
-      );
+      await _showResultsDialog(result);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
     }
+  }
+
+  Future<void> _showResultsDialog(Map<String, dynamic> result) async {
+    return showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: const Color(0xFF1C2333),
+        title: Text(
+          'Results: Score ${result['score']}',
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Mistakes:\n${(result['mistakes'] as List).join('\n')}',
+                style: const TextStyle(color: Colors.white),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Advice:\n${result['advice']}',
+                style: const TextStyle(color: Colors.white70),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+            child: const Text('OK', style: TextStyle(color: Color(0xFF8E6CFF))),
+          )
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: const Color(0xFF8E6CFF).withAlpha(128), width: 1),
+        ),
+      ),
+    );
   }
 
   @override
@@ -74,12 +107,14 @@ class _QuizScreenState extends State<QuizScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Question ${_currentPage + 1}/${widget.quiz.questions.length}'),
+        backgroundColor: const Color(0xFF0B0F19),
+        elevation: 0,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4.0),
           child: LinearProgressIndicator(
             value: (_currentPage + 1) / widget.quiz.questions.length,
-            backgroundColor: Colors.grey[300],
-            valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+            backgroundColor: const Color(0xFF1C2333),
+            valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF8E6CFF)),
           ),
         ),
       ),
@@ -94,54 +129,64 @@ class _QuizScreenState extends State<QuizScreen> {
         itemBuilder: (context, index) {
           final q = widget.quiz.questions[index];
           return SingleChildScrollView(
-            child: Card(
-              elevation: 4,
+            child: Container(
               margin: const EdgeInsets.all(16.0),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      q.question,
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 20),
-                    ...q.options.map((opt) {
-                      final selected = _answers[index] == opt;
-                      return InkWell(
-                        onTap: () => setState(() => _answers[index] = opt),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 150),
-                          margin: const EdgeInsets.symmetric(vertical: 6),
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                          decoration: BoxDecoration(
-                            color: selected ? Colors.blue.withAlpha(20) : Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: selected ? Colors.blue : Colors.grey.shade300, width: selected ? 2 : 1),
-                            boxShadow: [
-                              if (selected)
-                                BoxShadow(color: Colors.blue.withAlpha(40), blurRadius: 6, offset: const Offset(0, 2)),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(selected ? Icons.radio_button_checked : Icons.radio_button_off, color: selected ? Colors.blue : Colors.grey),
-                              const SizedBox(width: 12),
-                              Expanded(child: Text(opt, style: Theme.of(context).textTheme.bodyLarge)),
-                            ],
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1C2333),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    q.question,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  const SizedBox(height: 20),
+                  ...q.options.map((opt) {
+                    final selected = _answers[index] == opt;
+                    return InkWell(
+                      onTap: () => setState(() => _answers[index] = opt),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 150),
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                        decoration: BoxDecoration(
+                          color: selected ? const Color(0xFF8E6CFF).withAlpha(51) : Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: selected ? const Color(0xFF8E6CFF) : const Color(0xFFAAB3C5).withAlpha(128),
+                            width: selected ? 2 : 1,
                           ),
                         ),
-                      );
-                    }),
-                  ],
-                ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              selected ? Icons.radio_button_checked : Icons.radio_button_off,
+                              color: selected ? const Color(0xFF8E6CFF) : const Color(0xFFAAB3C5),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                opt,
+                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                ],
               ),
             ),
           );
         },
       ),
       bottomNavigationBar: BottomAppBar(
+        color: const Color(0xFF1C2333),
+        elevation: 0,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Row(
@@ -157,6 +202,10 @@ class _QuizScreenState extends State<QuizScreen> {
                       curve: Curves.ease,
                     );
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2C3245),
+                    foregroundColor: Colors.white,
+                  ),
                 ),
               const Spacer(),
               if (_currentPage < widget.quiz.questions.length - 1)
@@ -169,13 +218,36 @@ class _QuizScreenState extends State<QuizScreen> {
                       curve: Curves.ease,
                     );
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2C3245),
+                    foregroundColor: Colors.white,
+                  ),
                 ),
               if (_currentPage == widget.quiz.questions.length - 1)
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.send),
-                  label: const Text('Submit'),
-                  onPressed: _answers.length == widget.quiz.questions.length ? _submitQuiz : null,
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: _answers.length == widget.quiz.questions.length
+                        ? const LinearGradient(
+                            colors: [Color(0xFF8E6CFF), Color(0xFF00E0FF)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          )
+                        : null,
+                    color: _answers.length == widget.quiz.questions.length
+                        ? Colors.transparent
+                        : const Color(0xFF2C3245),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.send),
+                    label: const Text('Submit'),
+                    onPressed: _answers.length == widget.quiz.questions.length ? _submitQuiz : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      disabledForegroundColor: const Color(0xFF6C748A),
+                    ),
+                  ),
                 ),
             ],
           ),

@@ -61,20 +61,15 @@ class _UploadNotePageState extends State<UploadNotePage> {
       // Load the PDF document
       final PdfDocument document = PdfDocument(inputBytes: bytes);
       
-      // Extract text from all pages
-      String text = '';
-      for (int i = 0; i < document.pages.count; i++) {
-        final PdfTextExtractor extractor = PdfTextExtractor(document);
-        text += extractor.extractText(startPageIndex: i, endPageIndex: i);
-        text += '\n\n';
-      }
+      // Extract text from all pages at once
+      final String text = PdfTextExtractor(document).extractText();
       
       // Dispose the document
       document.dispose();
       
       return text;
     } catch (e) {
-      Logger.error('Error extracting text: $e');
+      Logger.error('Error extracting text from PDF: $e');
       return null;
     }
   }
@@ -157,70 +152,131 @@ class _UploadNotePageState extends State<UploadNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Upload Lecture Notes'),
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Upload notes for: ${widget.lesson}',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 24),
-                  TextField(
-                    controller: _titleController,
-                    decoration: const InputDecoration(
-                      labelText: 'Note Title',
-                      hintText: 'Enter a title for your notes',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          _fileName ?? 'No file selected',
-                          style: TextStyle(
-                            color: _fileName != null ? Colors.black : Colors.grey,
+      body: SafeArea(
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            'Upload notes for: ${widget.lesson}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              shadows: [
+                                Shadow(
+                                  color: const Color(0xFF8E6CFF).withAlpha(153),
+                                  blurRadius: 10,
+                                ),
+                              ],
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          overflow: TextOverflow.ellipsis,
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () => Navigator.of(context).pop(),
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    TextField(
+                      controller: _titleController,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter a title for your notes',
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1C2333),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: const Color(0xFF8E6CFF).withAlpha(128),
+                          width: 1,
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      ElevatedButton(
-                        onPressed: _pickPDF,
-                        child: const Text('Select PDF'),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              _fileName ?? 'No file selected',
+                              style: TextStyle(
+                                color: _fileName != null ? Colors.white : const Color(0xFFAAB3C5),
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          ElevatedButton(
+                            onPressed: _pickPDF,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF8E6CFF),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: const Text('Select PDF'),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  const Text(
-                    'Note: We\'ll extract the text from your PDF and enhance it with our reference materials to create better quizzes.',
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      color: Colors.grey,
                     ),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _fileName != null ? _uploadNote : null,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                    const SizedBox(height: 32),
+                    const Text(
+                      'Note: We\'ll extract the text from your PDF and enhance it with our reference materials to create better quizzes.',
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color: Color(0xFFAAB3C5),
                       ),
-                      child: const Text('Upload and Process'),
                     ),
-                  ),
-                ],
+                    const Spacer(),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: _fileName != null
+                            ? const LinearGradient(
+                                colors: [Color(0xFF8E6CFF), Color(0xFF00E0FF)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              )
+                            : null,
+                        color: _fileName != null ? Colors.transparent : const Color(0xFF2C3245),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: _fileName != null ? _uploadNote : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: Text(
+                          'Upload and Process',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: _fileName != null ? Colors.white : const Color(0xFF6C748A),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 }
