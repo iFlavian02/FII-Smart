@@ -1,0 +1,10 @@
+// Template file for constants
+// Copy this to constants.dart and add your actual API keys
+
+const String geminiApiKey = 'YOUR_GEMINI_API_KEY_HERE';
+const String appName = 'FII Smart';
+
+// Instructions:
+// 1. Copy this file to constants.dart
+// 2. Replace 'YOUR_GEMINI_API_KEY_HERE' with your actual Gemini API key
+// 3. Make sure constants.dart is in your .gitignore file

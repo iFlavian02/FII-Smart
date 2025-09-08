@@ -1,0 +1,68 @@
+Data Structures: Fundamental Concepts
+
+What are Data Structures?
+Data structures are ways of organizing and storing data in a computer so that it can be accessed and modified efficiently. They are essential building blocks for creating efficient algorithms and software systems.
+
+Common Data Structures:
+
+1. Arrays
+- Linear data structure storing elements of the same type
+- Fixed size in most programming languages
+- Allows random access to elements using index
+- Time complexity: O(1) for access, O(n) for search
+- Space complexity: O(n)
+
+2. Linked Lists
+- Dynamic data structure with nodes containing data and pointers
+- Types: Singly linked, Doubly linked, Circular linked
+- Time complexity: O(1) for insertion/deletion at head, O(n) for search
+- Space complexity: O(n)
+
+3. Stacks
+- Last In First Out (LIFO) structure
+- Main operations: push, pop, peek/top
+- Applications: Function calls, expression evaluation, undo operations
+- Time complexity: O(1) for all operations
+- Space complexity: O(n)
+
+4. Queues
+- First In First Out (FIFO) structure
+- Main operations: enqueue, dequeue, front
+- Applications: Process scheduling, breadth-first search
+- Time complexity: O(1) for all operations
+- Space complexity: O(n)
+
+5. Trees
+- Hierarchical structure with nodes and branches
+- Binary trees: each node has at most two children
+- Binary Search Trees: left child < parent < right child
+- Applications: File systems, decision trees, databases
+- Time complexity varies by type and operation
+
+6. Hash Tables
+- Key-value pairs for fast lookup
+- Uses hash function to map keys to array indices
+- Handles collisions through chaining or open addressing
+- Average time complexity: O(1) for insertion, deletion, search
+- Worst case: O(n)
+
+Time Complexity Analysis:
+- O(1): Constant time - best case
+- O(log n): Logarithmic time - very efficient
+- O(n): Linear time - acceptable for small datasets
+- O(n log n): Linearithmic time - common for efficient sorting
+- O(n²): Quadratic time - inefficient for large datasets
+
+Choosing the Right Data Structure:
+Consider factors like:
+- Access patterns (sequential vs random)
+- Frequency of insertions and deletions
+- Memory constraints
+- Need for sorting
+- Search requirements
+
+Understanding data structures is crucial for:
+- Writing efficient algorithms
+- Optimizing program performance
+- System design interviews
+- Building scalable applications

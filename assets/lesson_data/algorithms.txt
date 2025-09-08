@@ -1,0 +1,118 @@
+Algorithms: Problem-Solving Techniques
+
+What are Algorithms?
+An algorithm is a step-by-step procedure or set of rules for solving a computational problem. Good algorithms are efficient, correct, and clear.
+
+Algorithm Analysis:
+- Time Complexity: How execution time grows with input size
+- Space Complexity: How memory usage grows with input size
+- Best, Average, and Worst Case scenarios
+
+Sorting Algorithms:
+
+1. Bubble Sort
+- Time Complexity: O(n²)
+- Space Complexity: O(1)
+- Stable sorting algorithm
+- Simple but inefficient for large datasets
+
+2. Selection Sort
+- Time Complexity: O(n²)
+- Space Complexity: O(1)
+- Not stable
+- Performs well on small datasets
+
+3. Insertion Sort
+- Time Complexity: O(n²) worst case, O(n) best case
+- Space Complexity: O(1)
+- Stable and adaptive
+- Efficient for small or nearly sorted datasets
+
+4. Merge Sort
+- Time Complexity: O(n log n)
+- Space Complexity: O(n)
+- Stable sorting algorithm
+- Divide-and-conquer approach
+- Consistent performance regardless of input
+
+5. Quick Sort
+- Time Complexity: O(n log n) average, O(n²) worst case
+- Space Complexity: O(log n)
+- Not stable
+- In-place sorting
+- Generally faster than merge sort in practice
+
+6. Heap Sort
+- Time Complexity: O(n log n)
+- Space Complexity: O(1)
+- Not stable
+- Uses heap data structure
+- Good worst-case performance
+
+Search Algorithms:
+
+1. Linear Search
+- Time Complexity: O(n)
+- Space Complexity: O(1)
+- Works on unsorted data
+- Simple implementation
+
+2. Binary Search
+- Time Complexity: O(log n)
+- Space Complexity: O(1) iterative, O(log n) recursive
+- Requires sorted data
+- Very efficient for large datasets
+
+Graph Algorithms:
+
+1. Breadth-First Search (BFS)
+- Explores level by level
+- Uses queue data structure
+- Time Complexity: O(V + E)
+- Applications: Shortest path in unweighted graphs
+
+2. Depth-First Search (DFS)
+- Explores as deep as possible before backtracking
+- Uses stack (or recursion)
+- Time Complexity: O(V + E)
+- Applications: Cycle detection, topological sorting
+
+3. Dijkstra's Algorithm
+- Finds shortest path in weighted graphs
+- Time Complexity: O((V + E) log V) with priority queue
+- Cannot handle negative weights
+- Greedy algorithm approach
+
+Dynamic Programming:
+- Solves complex problems by breaking them down
+- Stores solutions to subproblems to avoid recomputation
+- Examples: Fibonacci sequence, Knapsack problem
+- Trade-off: More memory for better time complexity
+
+Greedy Algorithms:
+- Makes locally optimal choices
+- Hope to find global optimum
+- Examples: Huffman coding, Activity selection
+- Simple but doesn't always give optimal solution
+
+Algorithm Design Strategies:
+1. Divide and Conquer: Break problem into smaller subproblems
+2. Dynamic Programming: Store solutions to overlapping subproblems
+3. Greedy: Make locally optimal choices
+4. Backtracking: Try all possibilities, backtrack on failure
+5. Branch and Bound: Systematic enumeration with pruning
+
+Choosing the Right Algorithm:
+Consider:
+- Input size and constraints
+- Time vs space trade-offs
+- Stability requirements
+- Average vs worst-case performance
+- Implementation complexity
+
+Practice Problems:
+- Sorting arrays of different sizes
+- Searching in various data structures
+- Graph traversal problems
+- String manipulation algorithms
+- Mathematical computations
