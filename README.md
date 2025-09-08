@@ -33,8 +33,9 @@ A comprehensive Flutter application for computer science education featuring qui
    ```
 
 3. **Configure API Keys:**
-   - Copy `lib/utils/constants.dart.template` to `lib/utils/constants.dart`
-   - Replace `YOUR_GEMINI_API_KEY_HERE` with your actual Gemini API key from Google AI Studio
+   - Copy `.env.example` to `.env`
+   - Replace `your_gemini_api_key_here` with your actual Gemini API key from Google AI Studio
+   - Add your Firebase configuration values
 
 4. **Configure Firebase:**
    - Create a new Firebase project
