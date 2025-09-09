@@ -74,3 +74,6 @@ project/android/app/google-services.json
 
 # IDE files
 .vscode/settings.json
+
+image.png
+screenshot*
