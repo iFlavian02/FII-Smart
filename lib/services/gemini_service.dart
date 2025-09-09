@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:cs_quiz_app/utils/constants.dart';
+import 'package:fii_smart/utils/constants.dart';
 import '../models/quiz_model.dart';
-import 'package:cs_quiz_app/utils/logger.dart';
+import 'package:fii_smart/utils/logger.dart';
 
 class GeminiService {
   final GenerativeModel _model = GenerativeModel(model: 'gemini-2.5-flash', apiKey: geminiApiKey);
